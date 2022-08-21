@@ -63,10 +63,7 @@ nut_diameter=15;
 clamp_screwcapH=4;
 clamp_screwD=20;
 clamp_screw_length=/*6*oradius*/2*oradius;
-clamp_innerR=2.5;
-clamp_innerH=6;
-clamp_outerR=5;
-clamp_outerH=5;
+clamp_innerR=3;
 
 // top and bottom with and height
 hn_bottom_W = 22;
@@ -187,17 +184,15 @@ module clamp_screw() {
 }
 
 clamp_jawW=25.4;
-clamp_jawD=clamp_jawW/2;
-clamp_jawH=25.4/2;
+clamp_jawD=clamp_jawW * 0.75;
+clamp_jawH=25.4 * 0.5;
 
 module clamp_jaw() {
     shell=[clamp_jawW, clamp_jawD, clamp_jawH];
     difference() {
         cube(shell, center=true);
-        translate([0, -wall_size, 0])
-            cube(shell-[wall_size, -4*wall_size, wall_size], center=true);
         translate([0, 0, -(clamp_jawH/2 + wall_size/2+EPSILON)])
-            cylinder(h=(1+2*EPSILON)*wall_size, r=(1+EPSILON)*clamp_innerR);
+            cylinder(h=(clamp_jawH/2)+EPSILON, r=(1+EPSILON)*clamp_innerR);
     }
 }
 

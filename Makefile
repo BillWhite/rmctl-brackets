@@ -1,19 +1,24 @@
-PARTS=base_hook clamp_screw hexnut clamp_jaw clamp_screw_top
+PARTS=base_hook clamp_jaw
 SOURCES=$(PARTS) hexnut
-CLEANOBJS=$(patsubst %,%.d,$(SOURCES)) \
-          $(patsubst %,%.stl,$(SOURCES)) \
+CLEANOBJS=$(patsubst %,.d/%.d,$(SOURCES)) \
+          $(patsubst %,stl/%.stl,$(SOURCES)) \
           README.html
+DIRS=.d stl
 
-parts: $(patsubst %,%.stl,$(PARTS))
+parts: $(DIRS) $(patsubst %,stl/%.stl,$(PARTS))
 
-all: $(patsubst %,%.stl,$(SOURCES))
+all: $(DIRS) $(patsubst %,stl/%.stl,$(SOURCES))
 
-%.stl: %.scad
-	openscad -o $@ $< -d $*.d
+stl/%.stl: %.scad
+	openscad -o $@ $< -d ./.d/$*.d
+
+$(DIRS):
+	mkdir .d stl
 
 clean:
 	rm -f $(CLEANOBJS)
 
--include base_hook.d
--include clamp_screw.d
--include hexnut.d
+
+-include .d/base_hook.d
+-include .d/clamp_screw.d
+-include .d/hexnut.d
